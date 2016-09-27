@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+  proxy:
+    image: sourcelair/ceryx-proxy:hotfix
+    ports:
+      - 80:80
+    environment:
+      - CERYX_REDIS_HOST=redis
+      - CERYX_REDIS_PORT=6379
+    networks:
+      voxxed-net:
+
+  api:
+    image: sourcelair/ceryx-api:latest
+    ports:
+      - 5555
+    environment:
+      - CERYX_API_HOST=0.0.0.0
+      - CERYX_REDIS_HOST=redis
+      - CERYX_REDIS_PORT=6379
+    networks:
+      voxxed-net:
+
+  redis:
+    image: redis:3.2.3-alpine
+    command: redis-server --appendonly yes
+    networks:
+      voxxed-net:
+
+  flask-hostname:
+    image: akalipetis/flask-hostname
+    networks:
+      voxxed-net:
+
+networks:
+  voxxed-net:
+    external: true

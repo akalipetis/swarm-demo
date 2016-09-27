@@ -1,0 +1,55 @@
+{
+  "Services": {
+    "api": {
+      "Env": [
+        "CERYX_REDIS_PORT=6379", 
+        "CERYX_REDIS_HOST=redis", 
+        "CERYX_API_HOST=0.0.0.0"
+      ], 
+      "Image": "sourcelair/ceryx-api@sha256:75c35cbd05945bcf02b741f8bc7c253efe2f1bf12a4f852db6b7636e711c65d5", 
+      "Networks": [
+        "voxxed-net"
+      ], 
+      "Ports": [
+        {
+          "Port": 5555, 
+          "Protocol": "tcp"
+        }
+      ]
+    }, 
+    "flask-hostname": {
+      "Image": "akalipetis/flask-hostname@sha256:ae335f666c00557e15a728bf414e27b71ab62584422163418f7432d74d8d03c2", 
+      "Networks": [
+        "voxxed-net"
+      ]
+    }, 
+    "proxy": {
+      "Env": [
+        "CERYX_REDIS_PORT=6379", 
+        "CERYX_REDIS_HOST=redis"
+      ], 
+      "Image": "sourcelair/ceryx-proxy@sha256:b84dc3cf0f0c7e52d97b980d364fe64e2d823d4df81f6c2e15f5ef13b3b776ee", 
+      "Networks": [
+        "voxxed-net"
+      ], 
+      "Ports": [
+        {
+          "Port": 80, 
+          "Protocol": "tcp"
+        }
+      ]
+    }, 
+    "redis": {
+      "Args": [
+        "redis-server", 
+        "--appendonly", 
+        "yes"
+      ], 
+      "Image": "redis@sha256:49e794b32c129d1ab1ee9f99c0e602f57ea1329aebe641843e0743c8ee336a7e", 
+      "Networks": [
+        "voxxed-net"
+      ]
+    }
+  }, 
+  "Version": "0.1"
+}
